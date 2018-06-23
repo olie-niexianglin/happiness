@@ -1,0 +1,44 @@
+<update id="updateByPrimaryKeySelective" parameterType="com.pojo.IMM_ACTIVITY_ORG">
+    update imm_activity_org
+    <set>
+        <if test="icomId != null">
+            icom_id = #{icomId,jdbcType=VARCHAR},
+        </if>
+        <if test="orgName != null">
+            org_name = #{orgName,jdbcType=VARCHAR},
+        </if>
+        <if test="startDate != null">
+            start_date = #{startDate,jdbcType=VARCHAR},
+        </if>
+        <if test="endDate != null">
+            end_date = #{endDate,jdbcType=VARCHAR},
+        </if>
+        <if test="crtUser != null">
+            crt_user = #{crtUser,jdbcType=VARCHAR},
+        </if>
+        <if test="crtTime != null">
+            crt_time = #{crtTime,jdbcType=VARCHAR},
+        </if>
+        <if test="updUser != null">
+            upd_user = #{updUser,jdbcType=VARCHAR},
+        </if>
+        <if test="updTime != null">
+            upd_time = #{updTime,jdbcType=VARCHAR},
+        </if>
+        <if test="pcomId != null">
+            pcom_id = #{pcomId,jdbcType=VARCHAR},
+        </if>
+        <if test="status != null">
+            status = #{status,jdbcType=CHAR},
+        </if>
+        <if test="winCalculation != null">
+            win_calculation = #{winCalculation,jdbcType=CHAR},
+        </if>
+        <if test="baseDate != null">
+            base_date = #{baseDate,jdbcType=VARCHAR},
+        </if>
+    </set>
+    where activity_id = #{activityId,jdbcType=VARCHAR}
+    and ccom_id = #{ccomId,jdbcType=VARCHAR}
+    and org_id = #{orgId,jdbcType=VARCHAR}
+</update>
