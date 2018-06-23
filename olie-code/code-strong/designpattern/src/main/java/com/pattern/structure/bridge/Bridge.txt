@@ -1,0 +1,18 @@
+-- 桥梁模式(Bridge Pattern)
+   桥梁模式的用意:将抽象化(Abstraction)与实现化(Implementation)脱耦，使得二者可以独立地变化。
+
+-- 模式意图
+   降低类的继承维度，利用组合来解耦继承机制所带来的的强关联关系。
+   上面那一句话就是在解释如何将抽象话语实现话解耦。因为在通常情况下我们利用extends或者inplements来完成抽象话的实现过程。
+
+   例如：
+   抽象层:interface:Shap  interface:Color 两个维度
+   一个维度实现: Triangle(implemens Shap) Pentagon(implements Shap)
+   两个维度实现: RedTriangle(implements Shap and Color) GreenTriangle(implements Shap and Color)
+                 RedPentagon(implements Shap and Color) GrennPentagon(implements Shap and Color)
+
+   如果按照上述过程构建类结构，那么当出现一种新的 Shap 和一种新的 Color 的时候，需要添加很多的类结构。
+
+   利用 桥接模式 对多维度继承关系进行解耦，利用组合模式(弱关联模式)解决继承(强关联模式)
+
+
