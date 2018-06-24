@@ -6,18 +6,51 @@
         <artifactId>olie-frame</artifactId>
         <groupId>olie</groupId>
         <version>1.0-SNAPSHOT</version>
+        <!--<relativePath>根据路径寻找父元素 pom 文件，默认会在 ../ 目录下寻找</relativePath>-->
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <!--<groupId>默认情况下不需要指定，直接从父元素中继承</groupId>-->
+    <!--<version>默认情况下不需要指定，直接从父元素中继承</version>-->
     <artifactId>code-maven</artifactId>
 
-
+    <!-- 执行生命周期时 控制台日志输出的此信息 -->
+    <name>CODE-FRAME</name>
 
 
 
     <properties>
         <junit.version>4.11</junit.version>
     </properties>
+
+
+
+    <!--
+        dependencies 元素是可以被继承，可以把一些公用的依赖定义到父 pom 中去，但是在扩展子元素的时候就会出现问题，因为你永远不清楚
+        新增的子模块是否仍然需要之前共有的依赖？，然后就会出现了 dependencyManagement 元素
+        dependencyManagement 元素既可以让子模块继承到父模块的配置，又可以保证子元素依赖配置的灵活性
+    -->
+    <!-- 此处定义的 dependencyManagement 并不会给 olie-frame 引入依赖，也不会给他的子模块引入依赖，不过这段代码是会被继承的 -->
+    <!-- 其子模块依赖 junit 的时候，只需要如下配置即可 -->
+    <!--<dependencies>-->
+        <!--<dependency>-->
+            <!--<groupId>junit</groupId>-->
+            <!--<artifactId>junit</artifactId>-->
+        <!--</dependency>-->
+    <!--</dependencies>-->
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+
+
 
 
     <dependencies>
@@ -29,7 +62,7 @@
             <!-- complie test(JUnit) provided(Servlet Api) runtime(JDBC) system import-->
             <scope>test</scope>
             <type>jar</type>
-            <!--<optional></optional>-->
+            <!--<optional> true:依赖不会被传递，只会作用于当前（A 依赖于 B ,B依赖于C[可选]，那么 A 不会间接依赖于 C）</optional>-->
             <!--<exclusions>-->
             <!--<exclusion>-->
             <!---->
@@ -89,11 +122,11 @@
 
         <!-- setting.xml 配置认证信息 -->
         <!--<servers>-->
-        <!--<server>-->
-        <!--<id>ossrh</id>-->
-        <!--<username>olie</username>-->
-        <!--<password>123456</password>-->
-        <!--</server>-->
+            <!--<server>-->
+                <!--<id>ossrh</id>-->
+                <!--<username>olie</username>-->
+                <!--<password>123456</password>-->
+            <!--</server>-->
         <!--</servers>-->
 
         <!-- snapshot repository -->
@@ -111,6 +144,13 @@
 
 
     <build>
+
+        
+        <!--<pluginManagement>-->
+            <!--等同于 dependencyManagement 的作用，在父模块里面定义统一的插件信息，子模块使用时，直接在 plugin 模块声名 插件的 groupId 和 artifactId 即可-->
+        <!--</pluginManagement>-->
+
+
         <!-- maven 插件管理 -->
         <plugins>
             <plugin>
