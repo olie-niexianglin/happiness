@@ -15,7 +15,8 @@
     <artifactId>code-maven</artifactId>
 
     <!-- 执行生命周期时 控制台日志输出的此信息 -->
-    <name>CODE-FRAME</name>
+    <name>code-maven</name>
+
 
 
 
@@ -30,7 +31,7 @@
         新增的子模块是否仍然需要之前共有的依赖？，然后就会出现了 dependencyManagement 元素
         dependencyManagement 元素既可以让子模块继承到父模块的配置，又可以保证子元素依赖配置的灵活性
     -->
-    <!-- 此处定义的 dependencyManagement 并不会给 olie-frame 引入依赖，也不会给他的子模块引入依赖，不过这段代码是会被继承的 -->
+    <!-- 此处定义的 dependencyManagement 并不会真给 olie-frame 引入依赖，也不会给他的子模块引入依赖，不过这段代码是会被继承的 -->
     <!-- 其子模块依赖 junit 的时候，只需要如下配置即可 -->
     <!--<dependencies>-->
         <!--<dependency>-->
@@ -199,10 +200,21 @@
                 </configuration>
             </plugin>
 
+
+            <plugin>
+                    <groupId>org.eclipse.jetty</groupId>
+                    <artifactId>jetty-maven-plugin</artifactId>
+                    <version>9.4.7.RC0</version>
+                <configuration>
+                    <scanIntervalSeconds>10</scanIntervalSeconds>
+                    <webApp>
+                        <contextPath>/test</contextPath>
+                    </webApp>
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
-
-
 
 
 
