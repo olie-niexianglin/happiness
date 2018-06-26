@@ -205,12 +205,13 @@
                     <groupId>org.eclipse.jetty</groupId>
                     <artifactId>jetty-maven-plugin</artifactId>
                     <version>9.4.7.RC0</version>
-                <configuration>
-                    <scanIntervalSeconds>10</scanIntervalSeconds>
-                    <webApp>
-                        <contextPath>/test</contextPath>
-                    </webApp>
-                </configuration>
+
+                    <configuration>
+                        <scanIntervalSeconds>10</scanIntervalSeconds>
+                        <webApp>
+                            <contextPath>/test</contextPath>
+                        </webApp>
+                    </configuration>
             </plugin>
 
         </plugins>
@@ -219,6 +220,8 @@
 
 
 
+    <!-- olie-happiness 聚合所有的模块, 子模块并不一定需要继承 olie-happiness 即 指定 parent 属性 -->
+    <!-- 聚合 和 继承是两个没有任何关联的属性，被聚合者并不知晓聚合者是谁，被继承者并不知道继承者是谁 -->
 
 
 </project>

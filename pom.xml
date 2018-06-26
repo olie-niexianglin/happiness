@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>olie</groupId>
+    <artifactId>olie-happiness</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0-SNAPSHOT</version>
+
+
+    <!-- olie-happiness 聚合所有的模块, 子模块并不一定需要继承 olie-happiness 即 指定 parent 属性 -->
+    <!-- 聚合 和 继承是两个没有任何关联的属性，被聚合者并不知晓聚合者是谁，被继承者并不知道继承者是谁 -->
+    <modules>
+        <module>olie-code</module>
+        <module>olie-frame</module>
+        <module>olie-life</module>
+        <module>olie-treasure</module>
+    </modules>
+
+
+</project>
