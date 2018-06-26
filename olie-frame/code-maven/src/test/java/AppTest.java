@@ -9,6 +9,7 @@ import static junit.framework.TestCase.assertTrue;
  * @Description:
  */
 public class AppTest {
+
     @Test
     public void sayHello() {
         assertTrue( true );
