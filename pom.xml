@@ -20,4 +20,7 @@
     </modules>
 
 
+    <!-- 触发 Hadson 持续构建任务 -->
+
+
 </project>
