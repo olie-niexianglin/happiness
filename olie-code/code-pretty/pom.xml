@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <name>CODE-PRETTY</name><!-- 执行生命周期时 控制台日志输出的此信息 -->
+    <name>code-pretty</name><!-- 执行生命周期时 控制台日志输出的此信息 -->
 
     <artifactId>code-pretty</artifactId>
 
