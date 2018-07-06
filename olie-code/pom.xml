@@ -14,4 +14,18 @@
     </modules>
 
 
+    <properties>
+        <fastJsonVersion>1.2.42</fastJsonVersion>
+    </properties>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastJsonVersion}</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
 </project>

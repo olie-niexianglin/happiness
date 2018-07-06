@@ -14,6 +14,7 @@
     <modules>
         <module>intelligentalgorithm</module>
         <module>designpattern</module>
+        <module>code-strong-practice</module>
     </modules>
 
 

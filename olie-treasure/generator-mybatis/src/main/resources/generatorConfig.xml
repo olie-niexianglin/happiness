@@ -52,7 +52,7 @@
             去除自动生成的例子
         -->
 
-        <table schema="" tableName="IMM_ACTIVITY_ORG" domainObjectName="IMM_ACTIVITY_ORG" enableCountByExample="false" enableSelectByExample="false"
+        <table schema="" tableName="IMM_ACTIVITY_CUST" domainObjectName="IMM_ACTIVITY_ORG" enableCountByExample="false" enableSelectByExample="false"
                enableDeleteByExample="false" enableUpdateByExample="false" selectByExampleQueryId="false" >
         </table>
 
