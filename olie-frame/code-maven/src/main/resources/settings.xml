@@ -211,6 +211,8 @@ under the License.power by GEEK CUI
    |       variables for plugins in the POM.
    |
    |-->
+
+  <!-- 定义 profile -->
   <profiles> 
     <profile>
       <id>development</id>
@@ -253,6 +255,9 @@ under the License.power by GEEK CUI
     </profile>
   </profiles>
 
+
+
+  <!-- 激活 profile -->
    <activeProfiles>
     <activeProfile>development</activeProfile>
     <activeProfile>public-snapshots</activeProfile>

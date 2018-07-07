@@ -217,8 +217,83 @@
     </build>
 
 
+    <profiles>
+        <profile>
+            <id>development</id>
+
+        </profile>
+        <profile>
+            <id>public-snapshots</id>
+
+        </profile>
+    </profiles>
 
 
 
 
-</project>
+
+    <!--
+        profile 激活
+
+        1 命令行激活 激活 dev
+         mvn clean -Pdev
+
+        2 setting文件显示激活
+        <activeProfiles>
+            <activeProfile>dev</activeProfile>
+        </activeProfiles>
+
+        3 系统属性激活
+        <profiles>
+            <profile>
+                <id>dev</id>
+                <activition>
+                    <peoperty>
+                        <name>test</name>
+                        <value>x</value>
+                    </property>
+                </activition>
+            </profile>
+        </profiles>
+
+        mvn clean -Dtest=x
+
+        4 操作系统环境激活
+
+        <profiles>
+            <profile>
+                <id>dev</id>
+                <activition>
+                    <os>
+                        <name>Windows 10</name>
+                        <family>Windows</family>
+                        <arch>x86</arch>
+                        <version>7.692</version>
+                    </os>
+                </activition>
+            </profile>
+        </profiles>
+
+        5 默认激活，定义 profile 时候
+         <profiles>
+            <profile>
+                <id>dev</id>
+                <activition>
+                    <activityByDefault>true</activityByDefault>
+                </activition>
+            </profile>
+        </profiles>
+
+
+    -->
+
+    <!--
+        profile 种类
+        全局 setting.xml
+        用户 setting.xml
+        项目 setting.xml
+     -->
+
+    </project>
+
+
