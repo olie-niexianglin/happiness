@@ -7,8 +7,9 @@ import java.util.regex.Pattern;
  */
 public class Test {
 
+
     public static void main(String[] args) {
 
-        System.out.printf(String.valueOf((int)((5/(4+0.0)*10))));
+
     }
 }
