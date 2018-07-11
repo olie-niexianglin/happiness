@@ -50,7 +50,7 @@ public class Hump2Underline {
     }
 
     public static String camelToUnderline(String param){
-        if (param==null||"".equals(param.trim())){
+        if ((param == null) || "".equals(param.trim())){
             return "";
         }
         int len=param.length();
