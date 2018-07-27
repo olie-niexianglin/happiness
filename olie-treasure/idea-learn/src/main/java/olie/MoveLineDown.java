@@ -5,14 +5,14 @@ package olie;
  * @Date: 2018/7/9 11:39
  * @Description:
  */
-public class MoveStatementDown {
+public class MoveLineDown {
 
     /**
-     * move statement down:向下移动代段:Ctr + Shift + 向下箭头
+     * move statement down:向下移动代行:Alt + Shift + 向下箭头
      */
 
     /**
-     * 操作路径：code -> move statement down
+     * 操作路径：code -> move line down
      */
     /**
      * 感受：使用价值不错,有趣价值还行
@@ -21,6 +21,7 @@ public class MoveStatementDown {
     public static void main(String[] args) {
         System.out.printf("Move Statement Down!");
         System.out.printf("Move Statement UP!");
+
     }
 
 }

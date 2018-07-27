@@ -13,8 +13,8 @@ public class Fold {
      * Expand:展开光标处代码 Ctrl + +
      * Collapse:折叠光标处代码 Ctrl + -
      *
-     * Expand ALL:展开代码 Ctrl + +
-     * Collapse ALL:折叠代码 Ctrl + -
+     * Expand ALL:展开代码 Ctrl + Shift +
+     * Collapse ALL:折叠代码 Ctrl + Shift -
      *
      * Fold Code Block:折叠代码块 Ctrl + Alt + .
      */
@@ -38,4 +38,11 @@ public class Fold {
 
         }
     }
+
+    //region Description
+    static{
+
+    }
+    //endregion
+
 }

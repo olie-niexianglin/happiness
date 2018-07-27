@@ -1,3 +1,10 @@
+package olie;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @Auther: niexianglin you can mail to niexl@inspur.com
  * @Date: 2018/7/10 23:08
@@ -10,7 +17,9 @@ public class LanguageInject {
      */
     public static void main(String[] args) {
 
-        //language=JSON
-        String json = "";
+        // language=HTML
+        String JsonStr = "<body><name></name></body>";
+
+
     }
 }

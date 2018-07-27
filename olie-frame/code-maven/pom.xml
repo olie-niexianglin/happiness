@@ -146,9 +146,9 @@
 
     <build>
 
-        
+
         <!--<pluginManagement>-->
-            <!--等同于 dependencyManagement 的作用，在父模块里面定义统一的插件信息，子模块使用时，直接在 plugin 模块声名 插件的 groupId 和 artifactId 即可-->
+        <!--等同于 dependencyManagement 的作用，在父模块里面定义统一的插件信息，子模块使用时，直接在 plugin 模块声名 插件的 groupId 和 artifactId 即可-->
         <!--</pluginManagement>-->
 
 

@@ -18,6 +18,14 @@ public class ColumnSelectionMode {
      */
 
     /**
+     * 快捷键：Alt + Shift + Insert
+     */
+
+    /**
+     * 长按 Alt + 鼠标选择
+     */
+
+    /**
      * 感受：实用价值一般，有趣价值较高
      */
 }

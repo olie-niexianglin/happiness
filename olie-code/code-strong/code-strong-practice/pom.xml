@@ -16,7 +16,6 @@
     <url>http://www.example.com</url>
 
 
-
     <dependencies>
         <dependency>
             <groupId>com.alibaba</groupId>
@@ -41,10 +40,10 @@
         </dependency>
 
         <dependency>
-			<groupId>org.weakref</groupId>
-			<artifactId>jmxutils</artifactId>
-			<version>1.19</version>
-		</dependency>
+            <groupId>org.weakref</groupId>
+            <artifactId>jmxutils</artifactId>
+            <version>1.19</version>
+        </dependency>
 
         <dependency>
             <groupId>org.jsoup</groupId>
@@ -60,5 +59,57 @@
         </dependency>
 
     </dependencies>
+
+
+    <build>
+
+        <!-- maven 插件管理 -->
+        <plugins>
+            <plugin>
+                <!-- jar manifest.mf  javaagent 需要使用到 manifest.mf 文件-->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <id>attach-manifest</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <transformers>
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+
+                                    <manifestEntries>
+                                        <Main-Class>olie.javaagent.attach.TestMainInJar</Main-Class>
+                                        <!--<Premain-Class>olie.javaagent.Premain</Premain-Class>-->
+                                        <Agent-Class>olie.javaagent.attach.AgentMain</Agent-Class>
+                                    </manifestEntries>
+
+
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>6</source>
+                    <target>6</target>
+                    <!-- 编译时排除某些文件 -->
+                    <excludes>
+                        <exclude>**/javaagent/**</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+
 
 </project>

@@ -1,4 +1,4 @@
-import java.io.FileInputStream;
+package olie;
 
 /**
  * @Auther: niexianglin you can mail to niexl@inspur.com
@@ -14,15 +14,16 @@ public class IdeaLearn {
      */
 
 
+
+
     /**
      * Ctrl + Alt + C :将选中的字符串重构为一个常量
      */
     String name = HELLO_WORLD;
     String name1 = HELLO_WORLD;
 
-    /**
-     * Alt + ` : 打开 VCS 常用操作
-     */
+
+
 
 
     /**
@@ -32,8 +33,28 @@ public class IdeaLearn {
     private String alias = "Hello Alias";
 
     public static void main(String[] args) {
-        System.out.print("");
+//
+//        System.out.printf("Hello Wolrd");
+//
+//        while (true) {
+//            int i = 0;
+//
+//            if (i++ > 10) {
+//                System.out.printf("i" + i);
+//                break;
+//            }
+//        }
 
+        int i =3;
+        float f = Float.valueOf("3.000000");;
+
+        if (i > f) {
+            System.out.printf("1");
+        } else {
+            System.out.printf("2");
+
+        }
     }
+
 
 }

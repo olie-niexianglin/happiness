@@ -6,6 +6,8 @@ package olie.debug;
  * @Description:
  */
 
+import com.alibaba.fastjson.JSON;
+
 /**
  * 多线程调试：
  *      右击断点，将断点挂起模式设置 Thread ,这样就可以一个线程一个线程
@@ -30,6 +32,11 @@ public class MultipleThreadDebug {
                 System.out.println("2"); // 断点2
             }
         };
+        t.setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+            public void uncaughtException(Thread t, Throwable e) {
+                System.out.printf("Thread"+JSON.toJSONString(t));
+            }
+        });
         t.setDaemon(false);
         t.start();
         t.setName("Hello World");
