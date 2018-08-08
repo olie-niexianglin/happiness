@@ -16,7 +16,6 @@ public class Fold {
      * Expand ALL:展开代码 Ctrl + Shift +
      * Collapse ALL:折叠代码 Ctrl + Shift -
      *
-     * Fold Code Block:折叠代码块 Ctrl + Alt + .
      */
 
 
@@ -41,7 +40,7 @@ public class Fold {
 
     //region Description
     static{
-
+        String name = "Hello";
     }
     //endregion
 

@@ -71,5 +71,6 @@ public class ClassLoderIndex extends ClassLoader {
 
         System.out.println(obj);
         System.out.println(obj.getClass().getClassLoader());
+
     }
 }

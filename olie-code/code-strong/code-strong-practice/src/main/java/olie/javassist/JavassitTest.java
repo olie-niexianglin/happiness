@@ -8,10 +8,12 @@ import javassist.*;
  * @Description:
  */
 public class JavassitTest {
-    public static void main(String[] args) throws NotFoundException, CannotCompileException, InstantiationException, IllegalAccessException, ClassNotFoundException {
+    public static void main(String[] args) throws Exception, CannotCompileException, InstantiationException, IllegalAccessException, ClassNotFoundException {
 
         CtClass ctClass=ClassPool.getDefault().get("olie.javassist.Demo");
         String oldName="forJavassistTest";
+
+
         CtMethod ctMethod=ctClass.getDeclaredMethod(oldName);
         String newName=oldName+"$impl";
         ctMethod.setName(newName);
@@ -23,9 +25,28 @@ public class JavassitTest {
         newMethod.setBody(sb.toString());
         //增加新方法
         ctClass.addMethod(newMethod);
+
         //类已经更改，注意不能使用A a=new A();，因为在同一个classloader中，不允许装载同一个类两次
-        Demo a=(Demo)ctClass.toClass().newInstance();
-        a.forJavassistTest();
+        Demo demo = new Demo();
+        demo.forJavassistTest();
+
+
+
+//        ctClass.defrost();
+//        Demo a=(Demo)ctClass.toClass().newInstance();
+//        a.forJavassistTest();
+
+
+        ClassPool pool = ClassPool.getDefault();
+        CtClass cc = pool.get("java.lang.String");
+        CtField f = new CtField(CtClass.intType, "hiddenValue", cc);
+        f.setModifiers(Modifier.PUBLIC);
+        cc.addField(f);
+
+        String ss = (String) cc.toClass().newInstance();
+
+
+
     }
 
 }
