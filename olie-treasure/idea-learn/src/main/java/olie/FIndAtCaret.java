@@ -20,7 +20,11 @@ public class FIndAtCaret {
 
     public void sayHello2() {
         System.out.printf("Hello World");
+
+
     }
+
+
 
     /**
      * 操作路径：edit -> find -> find word at caret

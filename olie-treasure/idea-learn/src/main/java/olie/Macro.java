@@ -12,13 +12,18 @@ public class Macro {
      * 使用 IntelliJ IDEA 编辑器的 Macros 您可以记录、编辑和回放 Macros 等操作，为其分配快捷方式，并分享它们。
      */
 
-    /**
+    /*
+
      * 操作路径 Edit -> Macro
      */
 
     /**
      * 感受：实用价值一般
      */
-    public static void main(String[] args) {
-    }
+
+  public static void main (String[] args){
+      System.out.println("Hello Wolrd!");
+  }
+
+
 }
