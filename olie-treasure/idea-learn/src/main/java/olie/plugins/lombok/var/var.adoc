@@ -1,0 +1,21 @@
+= Mutably! [red]#Hassle-free# local variables.
+
+
+. var was promoted to the main package in lombok 2.0.0; given that JEP 286 establishes expectations,
+    and lombok's take on var follows these, we've decided to promote var([red]#推荐使用#) eventhough the feature remains controversial(存在争议).
+. var was introduced in lombok 1.16.12 as experimental feature([red]#实验特征#).
+
+= Overview
+var works exactly like val, except the local variable is not marked as final([red]#var 效果类似于 val，只是不会标记局部变量为 final#).
+
+The type is still entirely derived from the mandatory initializer expression([red]#根据局部变量初始化值推断变量类型#), and any further assignments,
+while now legal (because the variable is no longer final), aren't looked at to determine the appropriate type.
+For example, var x = "Hello"; x = Color.RED; does not work; the type of x will be inferred to be java.lang.
+String and thus, the x = Color.RED assignment will fail. If the type of x was inferred to be java.lang.Object this code would have compiled, but that's not how var works.
+
+NOTE: Supported configuration keys:
+lombok.var.flagUsage = [warning | error] (default: not set)
+Lombok will flag any usage of var as a warning or error if configured.([red]#lombok默认是不支持var,如果希望使用var,那么需要在lombok.config文件中设置相应开始属性值#)
+
+
+

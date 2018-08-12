@@ -1,0 +1,65 @@
+= @NonNull
+
+[red]#or: How I learned to stop worrying and love the NullPointerException.#
+
+You can use @NonNull on the parameter of a method([red]#方法#) or constructor([red]#构造器#) to have lombok generate a null-check
+statement for you.Lombok has always treated any annotation named @NonNull on a field as a signal
+to generate a null-check if lombok generates an entire method or constructor for you, via for example @Data.
+Now, however, using lombok's own @lombok.NonNull on a parameter results in the insertion of just the
+null-check statement inside your own method or constructor.The null-check looks like if (param == null) throw
+new NullPointerException("param is marked @NonNull but is null"); and will be inserted at the very top of
+your method([red]#空校验会在方法的最前端插入#). For constructors, the null-check will be inserted immediately following any explicit this()
+or super() calls([red]#若是构造方法,则会紧邻this/super方法之后).If a null-check is already present at the top, no additional null-check will be generated.
+(如果方法的最前端已经存在了空校验,则不会再次插入空校验)
+
+NOTE: lombok source
+----
+import lombok.NonNull;
+
+public class NonNullExample extends Something {
+  private String name;
+
+  public NonNullExample(@NonNull Person person) {
+    super("Hello");
+    this.name = person.getName();
+  }
+}
+----
+
+NOTE: compiler source
+----
+
+import lombok.NonNull;
+
+public class NonNullExample extends Something {
+  private String name;
+
+  public NonNullExample(@NonNull Person person) {
+    super("Hello");
+    if (person == null) {
+      throw new NullPointerException("person is marked @NonNull but is null");
+    }
+    this.name = person.getName();
+  }
+}
+----
+
+= Supported configuration keys:
+lombok.nonNull.exceptionType = [NullPointerException | IllegalArgumentException] (default: NullPointerException).
+When lombok generates a null-check if statement, by default, a java.lang.NullPointerException will be thrown with 'field name
+is marked @NonNull but is null' as the exception message. However, you can use IllegalArgumentException in this configuration
+key to have lombok throw that exception with this message instead([red]#可以修改空校验失败抛出异常的类型#).
+lombok.nonNull.flagUsage = [warning | error] (default: not set) Lombok will flag any usage of @NonNull as a warning or error if configured.
+
+= Small print
+Lombok's detection scheme for already existing null-checks consists of scanning for if statements that look just like
+lombok's own(lombok会检索代源代码中是否已经存在类似的空校验).
+Any 'throws' statement as the 'then' part of the if statement, whether in braces or not, counts(if 条件满足之后紧跟 throw 代码).
+The conditional of the if statement must look exactly like PARAMNAME == null(if语句中的条件表达式必须严格是 PARAMNAME == null).
+The first statement in your method that is not such a null-check stops the process of inspecting for null-checks(如果第一行代码不满足上述约束则停止"相同空校验规则"检查).
+
+While @Data and other method-generating lombok annotations will trigger on any annotation named @NonNull regardless of
+casing or package name, this feature only triggers on lombok's own @NonNull annotation from
+the lombok package.
+A @NonNull on a primitive parameter results in a warning. No null-check will be generated.
+A @NonNull on a parameter of an abstract method used to generate a warning; starting with version 1.16.8, this is no longer the case, to acknowledge the notion that @NonNull also has a documentary role. For the same reason, you can annotate a method as @NonNull; this is allowed, generates no warning, and does not generate any code.

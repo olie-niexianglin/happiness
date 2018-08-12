@@ -2,6 +2,7 @@ package olie.plugins.lombok;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 /**
  * @Auther: niexianglin you can mail to niexl@inspur.com

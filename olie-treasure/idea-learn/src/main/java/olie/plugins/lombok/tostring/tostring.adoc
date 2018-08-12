@@ -1,0 +1,100 @@
+= @ToString
+
+[red]#No need to start a debugger to see your fields: Just let lombok generate a toString for you!#
+
+Any class definition may be annotated with @ToString to let lombok generate an implementation of the toString() method.
+By default, it'll print your class name, along with each field, in order, separated by commas([red]#默认情况下会帮你创建 toString方法#).
+By setting the includeFieldNames parameter([red]#includeFieldNames=true显示属性名#) to true you can add some clarity (but also quite some length) to the output of the toString() method.
+By default, all non-static fields will be printed. If you want to skip some fields,
+you can annotate these fields with @ToString.Exclude([red]#toString方法中排除某个属性#).
+Alternatively, you can specify exactly which fields you wish to be used by using @ToString(onlyExplicitlyIncluded = true),
+then marking each field you want to include with @ToString.Include([red]#toString显示加入某个属性#).
+By setting callSuper to true([red]#callSupper=true toString 方法中调用父类 toString方法#), you can include the output of the
+superclass implementation of toString to the output.
+Be aware that the default implementation of toString() in java.lang.Object is pretty much meaningless, so you probably don't
+want to do this unless you are extending another class.You can also include the output of a method ([red]#toString显示加入某个实例方法#)call in your
+toString. Only instance (non-static) methods that take no arguments can be included. To do so, mark the method with @ToString.Include.
+You can change the name used to identify the member with @ToString.Include(name = "some other name"),
+and you can change the order in which the members are printed via @ToString.Include(rank = -1).
+Members without a rank are considered to have rank 0, members of a higher rank are printed first,
+ and members of the same rank are printed in the same order they appear in the source file([red]#改变属性名在 toString 具体显示的值和属性显示的顺序#).
+
+NOTE: lombok source
+----
+import lombok.ToString;
+
+@ToString
+public class ToStringExample {
+  private static final int STATIC_VAR = 10;
+  private String name;
+  private Shape shape = new Square(5, 10);
+  private String[] tags;
+  @ToString.Exclude private int id;
+
+  public String getName() {
+    return this.name;
+  }
+
+  @ToString(callSuper=true, includeFieldNames=true)
+  public static class Square extends Shape {
+    private final int width, height;
+
+    public Square(int width, int height) {
+      this.width = width;
+      this.height = height;
+    }
+  }
+}
+----
+
+NOTE: compiler source
+----
+public class ToStringExample {
+  private static final int STATIC_VAR = 10;
+  private String name;
+  private Shape shape = new Square(5, 10);
+  private String[] tags;
+  private int id;
+
+  public String getName() {
+    return this.getName();
+  }
+
+  public static class Square extends Shape {
+    private final int width, height;
+
+    public Square(int width, int height) {
+      this.width = width;
+      this.height = height;
+    }
+
+    @Override public String toString() {
+      return "Square(super=" + super.toString() + ", width=" + this.width + ", height=" + this.height + ")";
+    }
+  }
+
+  @Override public String toString() {
+    return "ToStringExample(" + this.getName() + ", " + this.shape + ", " + Arrays.deepToString(this.tags) + ")";
+  }
+}
+----
+
+= Supported configuration keys:
+1. ([red]#是否显示属性名#)lombok.toString.includeFieldNames = [true | false] (default: true)
+Normally lombok generates a fragment of the toString response for each field in the form of fieldName = fieldValue. If this setting is set to false, lombok will omit the name of the field and simply deploy a comma-separated list of all the field values. The annotation parameter 'includeFieldNames', if explicitly specified, takes precedence over this setting.
+2. ([red]#是否用属性 getter 方法替代 this.fieldName#)lombok.toString.doNotUseGetters = [true | false] (default: false)
+If set to true, lombok will access fields directly instead of using getters (if available) when generating toString methods. The annotation parameter 'doNotUseGetters', if explicitly specified, takes precedence over this setting.
+3. lombok.toString.flagUsage = [warning | error] (default: not set)
+Lombok will flag any usage of @ToString as a warning or error if configured.
+
+= Small print
+1. ([red]#若存在任何无参 toString 方法，lombok将不会创建 toString 方法，而且胡提示警告)If there is any method named toString with no arguments, regardless of return type, no method will be generated, and instead a warning is emitted explaining that your @ToString annotation is doing nothing. You can mark any method with @lombok.experimental.Tolerate to hide them from lombok.
+2. Arrays are printed via Arrays.deepToString, which means that arrays that contain themselves will result in StackOverflowErrors. However, this behaviour is no different from e.g. ArrayList.
+3. ([red]#方法级别高于属性#)If a method is marked for inclusion and it has the same name as a field, it replaces the toString output for that field (the method is included, the field is excluded, and the method's output is printed in the place the field would be printed).
+4. Prior to lombok 1.16.22, inclusion/exclusion could be done with the of and exclude parameters of the @ToString annotation. This old-style inclusion mechanism is still supported but will be deprecated in the future.
+5. ([red]#避免@ToString.Exclude和@ToString.Include同时出现#)Having both @ToString.Exclude and @ToString.Include on a member generates a warning; the member will be excluded in this case.
+6. We don't promise to keep the output of the generated toString() methods the same between lombok versions. You should never design your API so that other code is forced to parse your toString() output anyway!
+7. ([red]#$开头的属性就会被@toString方法屏蔽#)By default, any variables that start with a $ symbol are excluded automatically. You can only include them by using the @ToString.Include annotation.
+8. If a getter exists for a field to be included, it is called instead of using a direct field reference. This behaviour can be suppressed:
+@ToString(doNotUseGetters = true)
+9. @ToString can also be used on an enum definition.

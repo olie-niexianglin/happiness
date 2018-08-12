@@ -1,4 +1,4 @@
-package olie.plugins.lombok;
+package olie.plugins.lombok.val;
 
 import lombok.val;
 
@@ -8,8 +8,10 @@ import java.util.HashMap;
 public class ValExample {
     public String example() {
         val example = new ArrayList<String>();
+//        final ArrayList<String> example = new ArrayList();
         example.add("Hello, World!");
         val foo = example.get(0);
+//        final String foo = example.get(0)
         return foo.toLowerCase();
 
 
@@ -22,5 +24,8 @@ public class ValExample {
         for (val entry : map.entrySet()) {
             System.out.printf("%d: %s\n", entry.getKey(), entry.getValue());
         }
+//        for (final Map.Entry<Integer, String> entry : map.entrySet()) {
+//            System.out.printf("%d: %s\n", entry.getKey(), entry.getValue());
+//        }
     }
 }

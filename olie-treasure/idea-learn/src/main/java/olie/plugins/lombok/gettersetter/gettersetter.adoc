@@ -1,0 +1,121 @@
+= @Getter and @Setter
+
+[red]#Never write public int getFoo() {return foo;} again.(从此不需要再重复编写 getter & setter 方法了)#
+
+You can annotate any field with @Getter and/or @Setter, to let lombok generate the default
+getter/setter automatically([red]#你可以利用@Getter和@Setter注解完成成员属性读写方法的自动生成#).
+A default getter simply returns the field, and is named getFoo if the field
+is called foo (or isFoo if the field's type is boolean)([red]#boolean类型的属性读方法格式是 isFiled#). A default setter is named setFoo
+if the field is called foo, returns void, and takes 1 parameter of the same type as the field.
+It simply sets the field to this value.The generated getter/setter method will be public unless you
+explicitly specify an AccessLevel([red]#属性的读写方法默认是 public 的，除非你手动设置了 AccessLevel 值#),
+as shown in the example below. Legal access levels are PUBLIC, PROTECTED, PACKAGE, and PRIVATE.
+You can also put a @Getter and/or @Setter annotation on a class(当 @Setter和@Getter 注解标记在类上面的时候，所有非静态属性均会自动设置读写方法).
+In that case, it's as if you annotate all the non-static fields in that class with the annotation.
+You can always manually disable getter/setter generation for any field by using the special
+AccessLevel.NONE access level（[red]#手动去除一个属性的读写方法#）. This lets you override the behaviour of a @Getter, @Setter or @Data annotation
+on a class.To put annotations on the generated method, you can use onMethod=@__({@AnnotationsHere})([red]#setter方法参数设置注解#);
+to put annotations on the only parameter of a generated setter method, you can use onParam=@__({@AnnotationsHere}).
+Be careful though! This is an experimental feature. For more details see the documentation on the onX feature.
+
+NOTE: lombok source
+----
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
+
+public class GetterSetterExample {
+  /**
+   * Age of the person. Water is wet.
+   *
+   * @param age New value for this person's age. Sky is blue.
+   * @return The current value of this person's age. Circles are round.
+   */
+  @Getter @Setter private int age = 10;
+
+  /**
+   * Name of the person.
+   * -- SETTER --
+   * Changes the name of this person.
+   *
+   * @param name The new value.
+   */
+  @Setter(AccessLevel.PROTECTED) private String name;
+
+  @Override public String toString() {
+    return String.format("%s (age: %d)", name, age);
+  }
+}
+
+----
+
+NOTE: compiler source
+----
+
+public class GetterSetterExample {
+  /**
+   * Age of the person. Water is wet.
+   */
+  private int age = 10;
+
+  /**
+   * Name of the person.
+   */
+  private String name;
+
+  @Override public String toString() {
+    return String.format("%s (age: %d)", name, age);
+  }
+
+  /**
+   * Age of the person. Water is wet.
+   *
+   * @return The current value of this person's age. Circles are round.
+   */
+  public int getAge() {
+    return age;
+  }
+
+  /**
+   * Age of the person. Water is wet.
+   *
+   * @param age New value for this person's age. Sky is blue.
+   */
+  public void setAge(int age) {
+    this.age = age;
+  }
+
+  /**
+   * Changes the name of this person.
+   *
+   * @param name The new value.
+   */
+  protected void setName(String name) {
+    this.name = name;
+  }
+}
+----
+
+= Supported configuration keys:
+1. lombok.accessors.chain = [true | false] (default: false)
+If set to true, generated setters will return this (instead of void). An explicitly configured chain parameter of an @Accessors annotation takes precedence over this setting.([red]#链式 stter 方法#)
+2. lombok.accessors.fluent = [true | false] (default: false)
+If set to true, generated getters and setters will not be prefixed with the bean-standard 'get, is or set; instead, the methods will use the same name as the field (minus prefixes). An explicitly configured chain parameter of an @Accessors annotation takes precedence over this setting.([red]#不加 "get" 和 "set" 前缀#)
+3. lombok.accessors.prefix += a field prefix (default: empty list)
+This is a list property; entries can be added with the += operator. Inherited prefixes from parent config files can be removed with the -= operator. Lombok will strip any matching field prefix from the name of a field in order to determine the name of the getter/setter to generate. For example, if m is one of the prefixes listed in this setting, then a field named mFoobar will result in a getter named getFoobar(), not getMFoobar(). An explicitly configured prefix parameter of an @Accessors annotation takes precedence over this setting.([red]#设置前缀#)
+4. lombok.getter.noIsPrefix = [true | false] (default: false)
+If set to true, getters generated for boolean fields will use the get prefix instead of the defaultis prefix, and any generated code that calls getters, such as @ToString, will also use get instead of is([red]#boolean类型属性读方法格式 is->get#)
+5. lombok.setter.flagUsage = [warning | error] (default: not set)
+6. Lombok will flag any usage of @Setter as a warning or error if configured.
+7. lombok.getter.flagUsage = [warning | error] (default: not set)
+8. Lombok will flag any usage of @Getter as a warning or error if configured.
+
+= Small print
+1. For generating the method names, the first character of the field, if it is a lowercase character, is title-cased, otherwise, it is left unmodified. Then, get/set/is is prefixed.
+2. No method isgenerated if any method already exists with the same name (case insensitive) and same parameter count. For example, getFoo() will not be generated if there's already a method getFoo(String... x) even though it is technically possible to make the method. This caveat exists to prevent confusion. If the generation of a method is skipped for this reason, a warning is emitted instead. Varargs count as 0 to N parameters. You can mark any method with @lombok.experimental.Tolerate to hide them from lombok.
+3. For boolean fields that start with is immediately followed by a title-case letter, nothing is prefixed to generate the getter name.
+4. Any variation on boolean will not result in using the is prefix instead of the get prefix; for example, returning java.lang.Boolean results in a get prefix, not an is prefix.
+5. Any annotations named @NonNull (case insensitive) on the field are interpreted as: This field must not ever hold null. Therefore, these annotations result in an explicit null check in the generated setter. Also, these annotations (as well as any annotation named @Nullable or @CheckForNull) are copied to setter parameter and getter method.
+6. You can annotate a class with a @Getter or @Setter annotation. Doing so is equivalent to annotating all non-static fields in that class with that annotation. @Getter/@Setter annotations on fields take precedence over the ones on classes.
+7. Using the [red]#AccessLevel.NONE access level simply generates nothing#. It's useful only in combination with @Data or a class-wide @Getter or @Setter.
+8. @Getter can also be used on enums. @Setter can't, not for a technical reason, but for a pragmatic one: Setters on enums are an extremely bad idea.

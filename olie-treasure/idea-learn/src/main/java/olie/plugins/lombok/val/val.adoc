@@ -1,0 +1,61 @@
+= Finally! [red]#Hassle-free# final local variables.
+
+
+You can use val as the type of a local variable declaration(局部变量定义) instead of actually writing
+the type. When you do this, the type will be inferred(推断) from the initializer expression(根据初始值推断类型).
+The local variable will also be made final(变量被声明为 final 类型).This feature works on local variables and on
+foreach loops only(上述特性仅在声名局部变量和 foreach 循环中有效), not on fields(而不是成员属性). The initializer expression is required.
+val is actually a 'type' of sorts, and exists as a real class in the lombok package.
+You must import it for val to work (or use lombok.val as the type). The existence
+of this type on a local variable declaration triggers both the adding of the final
+keyword as well as copying the type of the initializing expression which overwrites
+the 'fake' val type(val 做了两件事,为局部变量添加 final 修饰符,根据局部变量初始值推断其类型).
+
+
+NOTE: lombok source
+----
+import java.util.HashMap;
+import lombok.val;
+
+public class ValExample {
+  public String example() {
+    val example = new ArrayList<String>();
+    example.add("Hello, World!");
+    val foo = example.get(0);
+    return foo.toLowerCase();
+  }
+
+  public void example2() {
+    val map = new HashMap<Integer, String>();
+    map.put(0, "zero");
+    map.put(5, "five");
+    for (val entry : map.entrySet()) {
+      System.out.printf("%d: %s\n", entry.getKey(), entry.getValue());
+    }
+  }
+----
+
+NOTE: compiler source
+----
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+public class ValExample {
+  public String example() {
+    final ArrayList<String> example = new ArrayList<String>();
+    example.add("Hello, World!");
+    final String foo = example.get(0);
+    return foo.toLowerCase();
+  }
+
+  public void example2() {
+    final HashMap<Integer, String> map = new HashMap<Integer, String>();
+    map.put(0, "zero");
+    map.put(5, "five");
+    for (final Map.Entry<Integer, String> entry : map.entrySet()) {
+      System.out.printf("%d: %s\n", entry.getKey(), entry.getValue());
+    }
+  }
+}
+----
