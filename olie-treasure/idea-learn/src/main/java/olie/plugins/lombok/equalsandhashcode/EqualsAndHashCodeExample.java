@@ -5,9 +5,8 @@ package olie.plugins.lombok.equalsandhashcode;
  * @Date: 2018/8/12 20:58
  * @Description:
  */
+
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import olie.plugins.lombok.tostring.ToStringExample;
 
 @EqualsAndHashCode
 public class EqualsAndHashCodeExample {
@@ -31,6 +30,8 @@ public class EqualsAndHashCodeExample {
             this.height = height;
         }
     }
+
+
     public static class Shape {
         private String name;
 

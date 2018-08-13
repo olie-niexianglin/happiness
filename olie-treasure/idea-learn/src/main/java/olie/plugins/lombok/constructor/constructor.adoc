@@ -1,0 +1,126 @@
+= @NoArgsConstructor, @RequiredArgsConstructor, @AllArgsConstructor
+
+[red]#Constructors made to order: Generates constructors that take no arguments, one argument per (final&@nonull注解属性)final / non-null field, or one argument for every field.#
+
+1. ([red]#没看懂#)This set of 3 annotations generate a constructor that will accept 1 parameter for certain fields,
+and simply assigns this parameter to the field.
+2. ([red]#@NoArgsConstructor,final 属性必须在生成对象之前完成初始化,所以使用无参构造器时要主要了#)@NoArgsConstructor will generate a constructor with no parameters. If this is not possible (because of final fields),
+a compiler error will result instead, unless @NoArgsConstructor(force = true) is used,
+then all final fields ([red]#force = true属性可以强制构造器初始化 final属性#)are initialized with 0 / false / null. For fields with constraints,
+such as @NonNull fields, no check is generated ([red]#@NonNull将无效#),so be aware that these constraints will generally not be fulfilled until
+those fields are properly initialized later. Certain java constructs, such as hibernate and the Service Provider
+Interface require a no-args constructor. This annotation is useful primarily in combination
+with either @Data or one of the other constructor generating annotations.
+3. ([red]#@RequiredArgsConstructor会将所有final non-initialized 属性和 @NonNull 标记的属性在构造器中完成初始化#)@RequiredArgsConstructor generates a constructor with 1 parameter for each field that requires special handling.
+All non-initialized final fields get a parameter, as well as any fields that are marked as @NonNull that
+aren't initialized where they are declared. For those fields marked with @NonNull,
+an explicit null check is also generated. The constructor will throw a NullPointerException if any of the parameters
+intended for the fields marked with @NonNull contain null. The order of the parameters match the order in which the
+fields appear in your class.
+4. ([red]#@AllArgsConstructor会在构造器中完成所有属性的初始化，并且会有效处理 @NonNull注解#)@AllArgsConstructor generates a constructor with 1 parameter for each field in your class.
+Fields marked with @NonNull result in null checks on those parameters.
+5. ([red]#可以生成类似静态工厂形式的构造器#)Each of these annotations allows an alternate form, where the generated constructor is always private,
+and an additional static factory method that wraps around the private constructor is generated.
+This mode is enabled by supplying the staticName value for the annotation,
+like so: ([red]#@RequiredArgsConstructor(staticName="of")#). Such a static factory method will infer generics,
+unlike a normal constructor. This means your API users get write MapEntry.of("foo", 5)
+instead of the much longer new MapEntry<String, Integer>("foo", 5).
+6. ([red]#m没看#)To put annotations on the generated constructor, you can use onConstructor=@__({@AnnotationsHere}),
+but be careful; this is an experimental feature. For more details see the documentation on the onX feature.
+7. ([red]#静态属性将会被构造器注解忽略#)Static fields are skipped by these annotations. Also, a @java.beans.ConstructorProperties annotation is
+added for all constructors with at least 1 argument, which allows bean editor tools to call the generated constructors.
+@ConstructorProperties is new in Java 1.6, which means that if your code is intended for compilation on Java 1.5,
+a compiler error will occur. Running on a JVM 1.5 should be no problem (the annotation will be ignored).
+To suppress the generation of the @ConstructorProperties annotation, add a parameter to your
+annotation: @AllArgsConstructor(suppressConstructorProperties=true). However, as java 1.5,
+which has already been end-of-lifed, fades into obscurity, this parameter will eventually be removed.
+It has also been marked deprecated for this reason.
+8. ([red]#构造器注解会强制创建构造器，不管你是否手动创建了构造器#)Unlike most other lombok annotations, the existence of an explicit constructor does not stop these annotations
+from generating their own constructor. This means you can write your own specialized constructor,
+and let lombok generate the boilerplate ones as well. If a conflict arises
+(one of your constructors ends up with the same signature as one that lombok generates), a compiler error will occur.
+
+
+NOTE: lombok source
+----
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.NonNull;
+
+@RequiredArgsConstructor(staticName = "of")
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+public class ConstructorExample<T> {
+  private int x, y;
+  @NonNull private T description;
+
+  @NoArgsConstructor
+  public static class NoArgsExample {
+    @NonNull private String field;
+  }
+}
+----
+
+NOTE: compiler source
+----
+public class ConstructorExample<T> {
+  private int x, y;
+  @NonNull private T description;
+
+  private ConstructorExample(T description) {
+    if (description == null) throw new NullPointerException("description");
+    this.description = description;
+  }
+
+  public static <T> ConstructorExample<T> of(T description) {
+    return new ConstructorExample<T>(description);
+  }
+
+  @java.beans.ConstructorProperties({"x", "y", "description"})
+  protected ConstructorExample(int x, int y, T description) {
+    if (description == null) throw new NullPointerException("description");
+    this.x = x;
+    this.y = y;
+    this.description = description;
+  }
+
+  public static class NoArgsExample {
+    @NonNull private String field;
+
+    public NoArgsExample() {
+    }
+  }
+}
+----
+
+= Supported configuration keys:
+1. lombok.anyConstructor.suppressConstructorProperties = [true | false] (default: false)
+If set to true, then lombok will skip adding a @java.beans.ConstructorProperties to generated constructors. This is useful in android and GWT development where that annotation is not usually available.
+2. lombok.[allArgsConstructor|requiredArgsConstructor|noArgsConstructor].flagUsage = [warning | error] (default: not set)
+Lombok will flag any usage of the relevant annotation (@AllArgsConstructor, @RequiredArgsConstructor or @NoArgsConstructor) as a warning or error if configured.
+3. lombok.anyConstructor.flagUsage = [warning | error] (default: not set)
+Lombok will flag any usage of any of the 3 constructor-generating annotations as a warning or error if configured.
+
+= Small print
+1. Arrays are 'deep' compared/hashCoded, which means that arrays that contain themselves
+will result in StackOverflowErrors. However, this behaviour is no different from e.g. ArrayList.
+2. You may safely presume that the hashCode implementation used will not change between versions of lombok,
+however this guarantee is not set in stone; if there's a significant performance improvement to be
+gained from using an alternate hash algorithm, that will be substituted in a future version.
+3. For the purposes of equality, 2 NaN (not a number) values for floats and doubles are considered equal,
+eventhough 'NaN == NaN' would return false. This is analogous to java.lang.Double's equals method,
+and is in fact required to ensure that comparing an object to an exact copy of itself returns true for equality.
+4. ([red]#如果已经有同名方法，要小心呦#)If there is any method named either hashCode or equals, regardless of return type,
+no methods will be generated, and a warning is emitted instead. These 2 methods need to be in sync with each other,
+which lombok cannot guarantee unless it generates all the methods,
+hence you always get a warning if one or both of the methods already exist.
+You can mark any method with @lombok.experimental.Tolerate to hide them from lombok.
+5. Attempting to exclude fields that don't exist or would have been excluded anyway (because they are static or transient) results in warnings on the named fields.
+If a method is marked for inclusion and it has the same name as a field,
+it replaces the field (the method is included, the field is excluded).
+6. Prior to lombok 1.16.22, inclusion/exclusion could be done with the of and exclude parameters
+of the @EqualsAndHashCode annotation. This old-style inclusion mechanism is still supported but will be deprecated in the future.
+7. By default, any variables that start with a $ symbol are excluded automatically.
+You can only include them by marking them with @EqualsAndHashCode.Include.
+8. If a getter exists for a field to be included, it is called instead of using a direct field reference.
+This behaviour can be suppressed:@EqualsAndHashCode(doNotUseGetters = true)

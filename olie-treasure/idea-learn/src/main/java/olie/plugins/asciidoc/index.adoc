@@ -1,0 +1,51 @@
+//头部
+= 使用 AsciiDoc 编写文档 =
+Joe Bloggs <jbloggs@mymail.com>
+v2.0, February 2003:
+Rewritten for version 2 release.
+
+
+
+
+
+//图片
+image:images/asciiDoc.png["Company Logo",height=32,scaledwidth="75%"align="left"]
+
+
+//表格
+
+[width="100%",cols="^,2m",frame="topbot",options="header,footer"]
+|======================
+|Column 1 |Column 2
+|1        |Item 1
+|2        |Item 2
+|3        |Item 3
+|6        |Three items
+|======================
+
+
+//标题
+= 文档标题 (0级) =
+== 段落标题 (1级) ==
+=== 段落标题 (2级) ===
+==== 段落标题 (3级) ====
+===== 段落标题 (4级) =====
+
+
+//无序列表
+- List item.
+* List item.
+** List item.
+*** List item.
+**** List item.
+***** List item.
+
+
+
+//脚注
+
+A footnote footnote:[footnote1];
+a second footnote with a reference ID footnote:[footnote2];
+finally a reference to the second footnote footnote:[footnote3].
+
+

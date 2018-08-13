@@ -1,6 +1,5 @@
 package olie.cglib;
 
-import com.alibaba.fastjson.JSON;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
