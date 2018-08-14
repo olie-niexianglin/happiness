@@ -1,0 +1,195 @@
+= @Data
+except that no constructor will be generated if any explicitly written constructors already exist
+[red]#All together now(一劳永逸): A shortcut for @ToString, @EqualsAndHashCode, @Getter on all fields, @Setter on all non-final fields, and @RequiredArgsConstructor!#
+
+1. @Data is a convenient shortcut annotation that bundles the features of @ToString, @EqualsAndHashCode,
+@Getter / @Setter and erd ([red]#@RequiredArgsConstructor#) together: In other words, @Data generates all the boilerplate that
+is normally associated with simple POJOs (Plain Old Java Objects) and beansred([red]#pojo 规则#):
+.. getters for all fields,
+.. setters for all non-final fields,
+.. and appropriate toString, equals and hashCode implementations that involve the fields of the class,
+.. and a constructor that initializes all final fields, as well as all non-final fields with no initializer that have been marked with @NonNull, in order to ensure the field is never null.
+2. @Data is like having implicit @Getter, @Setter, @ToString, @EqualsAndHashCode and @RequiredArgsConstructor
+annotations on the class.However, the parameters of these annotations (such as callSuper, includeFieldNames and exclude)
+cannot be set with @Data ([red]#注意哟,有一些注解属性@Data是不支持的#).
+([red]#@Data虽然不支持 callSuper属性，但是你依然可以明确指定@EqualsAndHashCode(callSuper=true)#)If you need to set non-default values for any of these parameters, just add those annotations explicitly;
+@Data is smart enough to defer to those annotations.
+3. All generated getters and setters will be public. To override the access level, annotate the field or class
+with an explicit @Setter and/or @Getter annotation. You can also use this annotation (by combining it with AccessLevel.NONE)
+to suppress generating a getter and/or setter altogether.
+4. All fields marked as transient will not be considered for hashCode and equals([red]#transient修饰的属性不会出现在hashcode和equals方法中#). All static fields will
+be skipped entirely ([red]#静态字段将完被抛弃#)(not considered for any of the generated methods, and no setter/getter will be made for them).
+5. If the class already contains a method with the same name and parameter count as any method that would normally
+be generated, that method is not generated, and no warning or error is emitted. For example, if you already have a
+method with signature equals(AnyType param), no equals method will be generated, even though technically it might
+be an entirely different method due to having different parameter types. The same rule applies to the constructor
+(any explicit constructor will prevent @Data from generating one), as well as toString, equals,
+and all getters and setters. ([red]#Tolerate原来是这个作用，隐藏一些手工添加的明显的方法或者构造器#)You can mark any constructor or method with @lombok.experimental.
+Tolerate to hide them from lombok.
+6. @Data can handle generics parameters for fields just fine. In order to reduce the boilerplate
+when constructing objects for classes with generics, you can use the staticConstructor parameter
+to generate a private constructor, as well as a static method that returns a new instance. This way,
+javac will infer the variable name. Thus, by declaring like so: @Data(staticConstructor="of")
+class Foo<T> { private T x;} you can create new instances of Foo by writing: Foo.of(5);
+instead of having to write: new Foo<Integer>(5);.
+
+
+NOTE: lombok source
+----
+import lombok.AccessLevel;
+import lombok.Setter;
+import lombok.Data;
+import lombok.ToString;
+
+@Data public class DataExample {
+  private final String name;
+  @Setter(AccessLevel.PACKAGE) private int age;
+  private double score;
+  private String[] tags;
+
+  @ToString(includeFieldNames=true)
+  @Data(staticConstructor="of")
+  public static class Exercise<T> {
+    private final String name;
+    private final T value;
+  }
+}
+----
+
+NOTE: compiler source
+----
+import java.util.Arrays;
+
+public class DataExample {
+  private final String name;
+  private int age;
+  private double score;
+  private String[] tags;
+
+  public DataExample(String name) {
+    this.name = name;
+  }
+
+  public String getName() {
+    return this.name;
+  }
+
+  void setAge(int age) {
+    this.age = age;
+  }
+
+  public int getAge() {
+    return this.age;
+  }
+
+  public void setScore(double score) {
+    this.score = score;
+  }
+
+  public double getScore() {
+    return this.score;
+  }
+
+  public String[] getTags() {
+    return this.tags;
+  }
+
+  public void setTags(String[] tags) {
+    this.tags = tags;
+  }
+
+  @Override public String toString() {
+    return "DataExample(" + this.getName() + ", " + this.getAge() + ", " + this.getScore() + ", " + Arrays.deepToString(this.getTags()) + ")";
+  }
+
+  protected boolean canEqual(Object other) {
+    return other instanceof DataExample;
+  }
+
+  @Override public boolean equals(Object o) {
+    if (o == this) return true;
+    if (!(o instanceof DataExample)) return false;
+    DataExample other = (DataExample) o;
+    if (!other.canEqual((Object)this)) return false;
+    if (this.getName() == null ? other.getName() != null : !this.getName().equals(other.getName())) return false;
+    if (this.getAge() != other.getAge()) return false;
+    if (Double.compare(this.getScore(), other.getScore()) != 0) return false;
+    if (!Arrays.deepEquals(this.getTags(), other.getTags())) return false;
+    return true;
+  }
+
+  @Override public int hashCode() {
+    final int PRIME = 59;
+    int result = 1;
+    final long temp1 = Double.doubleToLongBits(this.getScore());
+    result = (result*PRIME) + (this.getName() == null ? 43 : this.getName().hashCode());
+    result = (result*PRIME) + this.getAge();
+    result = (result*PRIME) + (int)(temp1 ^ (temp1 >>> 32));
+    result = (result*PRIME) + Arrays.deepHashCode(this.getTags());
+    return result;
+  }
+
+  public static class Exercise<T> {
+    private final String name;
+    private final T value;
+
+    private Exercise(String name, T value) {
+      this.name = name;
+      this.value = value;
+    }
+
+    public static <T> Exercise<T> of(String name, T value) {
+      return new Exercise<T>(name, value);
+    }
+
+    public String getName() {
+      return this.name;
+    }
+
+    public T getValue() {
+      return this.value;
+    }
+
+    @Override public String toString() {
+      return "Exercise(name=" + this.getName() + ", value=" + this.getValue() + ")";
+    }
+
+    protected boolean canEqual(Object other) {
+      return other instanceof Exercise;
+    }
+
+    @Override public boolean equals(Object o) {
+      if (o == this) return true;
+      if (!(o instanceof Exercise)) return false;
+      Exercise<?> other = (Exercise<?>) o;
+      if (!other.canEqual((Object)this)) return false;
+      if (this.getName() == null ? other.getValue() != null : !this.getName().equals(other.getName())) return false;
+      if (this.getValue() == null ? other.getValue() != null : !this.getValue().equals(other.getValue())) return false;
+      return true;
+    }
+
+    @Override public int hashCode() {
+      final int PRIME = 59;
+      int result = 1;
+      result = (result*PRIME) + (this.getName() == null ? 43 : this.getName().hashCode());
+      result = (result*PRIME) + (this.getValue() == null ? 43 : this.getValue().hashCode());
+      return result;
+    }
+  }
+}
+----
+
+= Supported configuration keys:
+lombok.data.flagUsage = [warning | error] (default: not set)
+Lombok will flag any usage of @Data as a warning or error if configured.
+
+= Small print
+1. See the small print of @ToString, @EqualsAndHashCode, @Getter / @Setter and @RequiredArgsConstructor.
+2. Any annotations named @NonNull (case insensitive) on a field are interpreted as: This field must not ever hold null.
+Therefore, these annotations result in an explicit null check in the generated constructor for the provided field.
+Also, these annotations (as well as any annotation named @Nullable) are copied to the constructor parameter,
+in both the true constructor and any static constructor. The same principle applies to generated getters and setters
+(see the documentation for @Getter / @Setter)
+3. By default, any variables that start with a $ symbol are excluded automatically.
+You can include them by specifying an explicit annotation (@Getter or @ToString, for example) and
+using the 'of' parameter.
