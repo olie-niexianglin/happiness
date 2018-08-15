@@ -1,0 +1,89 @@
+= @Log (and friends)
+
+Captain's Log, stardate 24435.7: "What was that line again?"([red]#这里应该是一条船长的日志吧#)
+
+The various @Log variants were added in lombok v0.10. NEW in lombok 0.10: You can annotate any class with
+a log annotation to let lombok generate a logger field ([red]#@log帮你生成一个日志字段#).
+The logger is named log and the field's type depends on which logger you have selected.
+
+= Overview
+
+You put the variant of @Log on your class (whichever one applies to the logging system you use);
+you then have a static final log field, initialized to the name of your class,
+which you can then use to write log statements.
+
+There are several choices available:
+@CommonsLog
+@Slf4j
+Creates private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(LogExample.class);
+
+By default, the topic (or name) of the logger will be the class name of the class annotated with the @Log annotation.
+This can be customised by specifying the topic parameter. For example: @XSlf4j(topic="reporting")([red]#可以自定义 logger 的名字#).
+
+NOTE: lombok source
+----
+import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
+
+@Log
+public class LogExample {
+
+  public static void main(String... args) {
+    log.error("Something's wrong here");
+  }
+}
+
+@Slf4j
+public class LogExampleOther {
+
+  public static void main(String... args) {
+    log.error("Something else is wrong here");
+  }
+}
+
+@CommonsLog(topic="CounterLog")
+public class LogExampleCategory {
+
+  public static void main(String... args) {
+    log.error("Calling the 'CounterLog' with a message");
+  }
+}
+
+----
+
+NOTE: compiler source
+----
+public class LogExample {
+  private static final java.util.logging.Logger log = java.util.logging.Logger.getLogger(LogExample.class.getName());
+
+  public static void main(String... args) {
+    log.error("Something's wrong here");
+  }
+}
+
+public class LogExampleOther {
+  private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(LogExampleOther.class);
+
+  public static void main(String... args) {
+    log.error("Something else is wrong here");
+  }
+}
+
+public class LogExampleCategory {
+  private static final org.apache.commons.logging.Log log = org.apache.commons.logging.LogFactory.getLog("CounterLog");
+
+  public static void main(String... args) {
+    log.error("Calling the 'CounterLog' with a message");
+  }
+}
+----
+
+
+= Small print
+1. If a field called log already exists, a warning will be emitted and no code will be generated.
+
+2. A future feature of lombok's diverse log annotations is to find calls to the logger field and,
+if the chosen logging framework supports it and the log level can be compile-time determined
+from the log call, guard it with an if statement. This way if the log statement ends up being ignored,
+the potentially expensive calculation of the log string is avoided entirely. This does mean that you should
+NOT put any side-effects in the expression that you log.

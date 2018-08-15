@@ -8,10 +8,12 @@ package olie.plugins.lombok.data;
 import lombok.*;
 
 @Data public class DataExample {
+
     private final String name;
     @Setter(AccessLevel.PACKAGE) private int age;
     private double score;
     private String[] tags;
+
 
     @ToString(includeFieldNames=true)
     @Data(staticConstructor="of")
