@@ -10,7 +10,7 @@ import java.util.List;
 public class ResponsebilityChainTest {
     public static void main(String[] args) {
         //创建待处理对象
-        Request requet = new Request("sdafaf");
+        Request requet = new Request("sdafafs");
 
         //创建处理结果对象
         Response response = new Response();
@@ -33,9 +33,10 @@ public class ResponsebilityChainTest {
 }
 
 //被处理的责任对象
-class Request{
-    private String name;
 
+class Request{
+
+    private String name;
     public String getName() {
         return name;
     }

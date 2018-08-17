@@ -1,0 +1,117 @@
+= @Builder
+
+[red]#... and Bob's your uncle: No-hassle fancy-pants APIs for object creation!#
+
+
+([red]#@Builder注解帮我们创建一个可链式编程的对象，我现在能读懂的仅仅如此，其实现的代码可借鉴#)The @Builder annotation produces complex builder APIs for your classes.
+
+@Builder lets you automatically produce the code required to have your class be instantiable with code such as:
+Person.builder().name("Adam Savage").city("San Francisco").job("Mythbusters").job("Unchained Reaction").build();
+@Builder can be placed on a class, or on a constructor, or on a method. While the "on a class" and "on a constructor" mode are the most common use-case,
+@Builder is most easily explained with the "method" use-case.
+
+NOTE: lombok source
+----
+import lombok.Builder;
+import lombok.Singular;
+import java.util.Set;
+
+@Builder
+public class BuilderExample {
+  @Builder.Default private long created = System.currentTimeMillis();
+  private String name;
+  private int age;
+  @Singular private Set<String> occupations;
+}
+----
+
+NOTE: compiler source
+----
+import java.util.Set;
+
+public class BuilderExample {
+  private long created;
+  private String name;
+  private int age;
+  private Set<String> occupations;
+
+  BuilderExample(String name, int age, Set<String> occupations) {
+    this.name = name;
+    this.age = age;
+    this.occupations = occupations;
+  }
+
+  private static long $default$created() {
+    return System.currentTimeMillis();
+  }
+
+  public static BuilderExampleBuilder builder() {
+    return new BuilderExampleBuilder();
+  }
+
+  public static class BuilderExampleBuilder {
+    private long created;
+    private boolean created$set;
+    private String name;
+    private int age;
+    private java.util.ArrayList<String> occupations;
+
+    BuilderExampleBuilder() {
+    }
+
+    public BuilderExampleBuilder created(long created) {
+      this.created = created;
+      this.created$set = true;
+      return this;
+    }
+
+    public BuilderExampleBuilder name(String name) {
+      this.name = name;
+      return this;
+    }
+
+    public BuilderExampleBuilder age(int age) {
+      this.age = age;
+      return this;
+    }
+
+    public BuilderExampleBuilder occupation(String occupation) {
+      if (this.occupations == null) {
+        this.occupations = new java.util.ArrayList<String>();
+      }
+
+      this.occupations.add(occupation);
+      return this;
+    }
+
+    public BuilderExampleBuilder occupations(Collection<? extends String> occupations) {
+      if (this.occupations == null) {
+        this.occupations = new java.util.ArrayList<String>();
+      }
+
+      this.occupations.addAll(occupations);
+      return this;
+    }
+
+    public BuilderExampleBuilder clearOccupations() {
+      if (this.occupations != null) {
+        this.occupations.clear();
+      }
+
+      return this;
+    }
+
+    public BuilderExample build() {
+      // complicated switch statement to produce a compact properly sized immutable set omitted.
+      Set<String> occupations = ...;
+      return new BuilderExample(created$set ? created : BuilderExample.$default$created(), name, age, occupations);
+    }
+
+    @java.lang.Override
+    public String toString() {
+      return "BuilderExample.BuilderExampleBuilder(created = " + this.created + ", name = " + this.name + ", age = " + this.age + ", occupations = " + this.occupations + ")";
+    }
+  }
+}
+----
+
