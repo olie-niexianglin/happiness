@@ -10,8 +10,10 @@ public class DebugIndex {
     public static void main(String[] args) {
 
 
+
         // force step into 可以进入sdk 中的方法
-        System.out.printf("Start");
+
+		System.out.printf("Start");
 
         // shift f7 可以选择进入[F7,embedF7,embedembedF7]
         F7(embedF7(embedembedF7()));

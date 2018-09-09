@@ -12,7 +12,6 @@ public class MethodBreakpoint {
     */
     public static void main(String[] args) {
         MethodBreakPintEntry();
-        MethodBreakPintExit();
     }
 
     public static void MethodBreakPintEntry() {
@@ -21,9 +20,4 @@ public class MethodBreakpoint {
         System.out.printf("MethodBreakPintExit");
     }
 
-    public static void MethodBreakPintExit() {
-        System.out.printf("MethodBreakPintEntry");
-
-        System.out.printf("MethodBreakPintExit");
-    }
 }
