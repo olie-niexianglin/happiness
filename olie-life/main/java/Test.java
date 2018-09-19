@@ -1,3 +1,6 @@
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -9,13 +12,26 @@ import java.util.ArrayList;
 public class Test {
 
 
-    public static void main(String[] args) {
-        List<byte[]> bytes = new ArrayList<byte[]>();
-        int i=0;
-        while(true){
-            bytes.add(new byte[5*1024*1024]);
-            System.out.println("分配次数："+(++i));
-        }
+    private static int state = 0;
 
+    public static void main(final String[] args) {
+
+        List<Integer> ss = new ArrayList<>();
+        ss.add(2);
+        ss.add(1);
+        ss.add(3);
+        ss.add(4);
+        Collections.sort(ss);
+
+        System.out.printf("");
+    }
+}
+
+class ChangeClass implements Comparable<ChangeClass>{
+    private final  int p = 10;
+
+    @Override
+    public int compareTo(@NotNull ChangeClass o) {
+        return this.p - o.p;
     }
 }

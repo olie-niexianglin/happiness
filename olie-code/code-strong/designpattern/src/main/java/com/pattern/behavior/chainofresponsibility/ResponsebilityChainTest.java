@@ -2,6 +2,7 @@ package com.pattern.behavior.chainofresponsibility;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * Created by niexianglin on 2016/9/15 10:30
@@ -10,7 +11,7 @@ import java.util.List;
 public class ResponsebilityChainTest {
     public static void main(String[] args) {
         //创建待处理对象
-        Request requet = new Request("sdafafs");
+        Request requet = new Request("sa333333A");
 
         //创建处理结果对象
         Response response = new Response();
@@ -23,12 +24,14 @@ public class ResponsebilityChainTest {
         handlerChain.addHandler(new CapitalHandler());
 
         //开始处理待处理对象
-        handlerChain.doHandler(requet,response);
+        boolean ss = handlerChain.doHandler(requet,response);
 
         //打印处理结果
         for(String result : response.getResults()){
             System.out.println(result);
         }
+
+
     }
 }
 
@@ -105,7 +108,7 @@ class CapitalHandler implements Handler{
 
     public boolean doHandler(Request request,Response response, HandlerChain handlerChain) {
         System.out.println("the handler of CapitalHandler before");
-        if(request.getName().length()>100){
+        if(request.getName().length()>3){
             response.addResults("请求数据中存在大写字母，不合理");
             return false;
         }
