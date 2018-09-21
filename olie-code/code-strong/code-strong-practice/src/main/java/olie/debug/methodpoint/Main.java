@@ -18,6 +18,7 @@ public class Main {
     private void asyncExample() throws InterruptedException, ExecutionException
     {
         final CompletableFuture<String> future = supplyAsync(() -> "F").thenApplyAsync(this::append_oo);
+
         System.out.println(future.get());
     }
 
