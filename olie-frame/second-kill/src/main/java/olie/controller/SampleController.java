@@ -22,7 +22,8 @@ public class SampleController {
 	
 	@Autowired
 	RedisService redisService;
-	
+
+
     @RequestMapping("/hello")
     @ResponseBody
     public Result<String> home() {
