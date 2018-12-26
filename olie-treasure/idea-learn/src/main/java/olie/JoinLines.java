@@ -18,5 +18,10 @@ public class JoinLines {
     /**
      * 感受：使用价值一般,有趣价值还行
      */
+
+    public static void main(String[] args) {
+        short i = 0;
+        int j = 0;
+    }
 }
 

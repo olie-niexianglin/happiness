@@ -27,4 +27,13 @@ public class UnWrap {
         }
 
     }
+
+
+    /**
+     * @param A
+     * @param B
+     */
+    public static void method(String A, String B) {
+
+    }
 }

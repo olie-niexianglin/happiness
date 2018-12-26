@@ -33,13 +33,13 @@
             targetPackage：生成的实体包位置，默认存放在src目录下
             targetProject：目标工程名
          -->
-        <javaModelGenerator targetPackage="com.pojo"
+        <javaModelGenerator targetPackage="com.jd.o2o.newton.inout.domain.entity"
                             targetProject="src/main/java" />
 
         <!-- 实体包对应映射文件位置及名称，默认存放在src目录下 -->
         <sqlMapGenerator targetPackage="mapping" targetProject="src/main/resources" />
         <!--生成Dao类存放位置-->
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.dao" targetProject="src/main/java">
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.jd.o2o.newton.inout.dao" targetProject="src/main/java">
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
         <!--生成对应表及类名-->
@@ -52,7 +52,7 @@
             去除自动生成的例子
         -->
 
-        <table schema="" tableName="IMM_ACTIVITY_CUST" domainObjectName="IMM_ACTIVITY_ORG" enableCountByExample="false" enableSelectByExample="false"
+        <table schema="" tableName="schedule_task" domainObjectName="scheduleTask" enableCountByExample="false" enableSelectByExample="false"
                enableDeleteByExample="false" enableUpdateByExample="false" selectByExampleQueryId="false" >
         </table>
 
