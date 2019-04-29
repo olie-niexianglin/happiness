@@ -1,12 +1,5 @@
-/*
- * Copyright (c) 2018. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
- * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
- * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
- * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
- * Vestibulum commodo. Ut rhoncus gravida arcu.
- */
-
-import java.lang.reflect.Array;
+import javax.xml.bind.SchemaOutputResolver;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,9 +13,39 @@ import java.util.List;
 public class Constant {
     public static final int constant_int = 753;
 
-
-    private void sayHello() {
-        ArrayList<String> strings = new ArrayList<String>();
+    public static int getConstant_int() {
+        return constant_int;
     }
+
+    public static void main(String[] args) throws UnsupportedEncodingException {
+        byte[] bytes = "hello".getBytes("UTF-8");
+
+        for (int i = 0; i < bytes.length; i++) {
+            byte aByte = bytes[i];
+            System.out.printf("" + aByte);
+        }
+
+    }
+
+
+    /**
+     * sssss
+     */
+    private String name;
+
+    /**
+     * 获取 sssss
+     */
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * 设置 sssss
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
 
 }

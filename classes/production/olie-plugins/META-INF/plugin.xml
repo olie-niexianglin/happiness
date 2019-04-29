@@ -1,0 +1,53 @@
+<idea-plugin>
+  <id>com.your.company.unique.plugin.id</id>
+  <name>olie-music</name>
+  <version>1.0</version>
+  <vendor email="niexianglinolie@126.com" url="http://www.baidu.com">Olie</vendor>
+
+  <description>
+      <![CDATA[
+      <h1>Music for Idea</h1>
+      <br/>
+      <p><b>Music for Idea.</b></p>
+      <br/>
+      <p><b>Music for Idea</b></p>
+      <p><b>Music for Idea</b></p>
+    ]]>
+  </description>
+
+  <change-notes>
+      <![CDATA[
+      <ul>
+        <li>v1.3 fix some bug</li>
+        <li>v1.2 add info</li>
+        <li>v1.1 fix bug</li>
+        <li>v1.0 init</li>
+      </ul>
+    ]]>
+  </change-notes>
+
+
+  <!-- 对IntelliJ IDEA软件支持本插件版本号 -->
+  <idea-version since-build="173.0"/>
+
+  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+       on how to target different products -->
+  <!-- uncomment to enable plugin in all products
+  <depends>com.intellij.modules.lang</depends>
+  -->
+
+  <!--自定义扩展，暂时用不到 -->
+  <extensions defaultExtensionNs="com.intellij">
+    <!-- Add your extensions here -->
+  </extensions>
+
+
+    <!--具体的插件动作，后面会介绍 -->
+  <actions>
+    <!-- Add your actions here -->
+      <action id="testAction" class="com.test.TestAction" text="testAction" description="test">
+          <add-to-group group-id="HelpMenu" anchor="first"/>
+      </action>
+  </actions>
+
+</idea-plugin>

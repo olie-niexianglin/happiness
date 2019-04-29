@@ -52,7 +52,7 @@
             去除自动生成的例子
         -->
 
-        <table schema="" tableName="schedule_task" domainObjectName="scheduleTask" enableCountByExample="false" enableSelectByExample="false"
+        <table schema="" tableName="order_main" domainObjectName="scheduleTask" enableCountByExample="false" enableSelectByExample="false"
                enableDeleteByExample="false" enableUpdateByExample="false" selectByExampleQueryId="false" >
         </table>
 

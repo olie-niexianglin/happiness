@@ -21,11 +21,29 @@ public class CyclicExpandWord {
      */
 
     public static void main(String[] args) {
+
         try {
-            System.out.printf("Hello World");
+            System.out.print("Hello World");
+
+            boolean flag = false;
+
+            sayHello("world");
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+    }
+
+    /**
+     * SayHelo to EveryOne
+     * @param message
+     */
+    public static void sayHello(String message) {
+
+    }
+
+    public static void sayHello(String message, String tag) {
 
     }
 }

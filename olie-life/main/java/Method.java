@@ -20,7 +20,7 @@ public class Method {
      *
      * @param name
      * @return void
-     * @auther niexianglin mail:niexianglin@imdada.cn
+     * @auther niexianglin mail:niexianglin@World.cn
      * @date 2018/11/23 16:08
      */
     public void sayHello(String name) {

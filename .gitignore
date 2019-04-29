@@ -37,3 +37,6 @@ target/
 *.iml
 out/
 
+/olie-code/code-strong/code-strong-practice/dependency-reduced-pom.xml
+/olie-code/code-strong/code-strong-practice/src/main/java/olie/javaagent/java/lang/annotations.xml
+
